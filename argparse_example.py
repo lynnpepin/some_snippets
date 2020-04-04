@@ -7,16 +7,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Put your description here")
     
     # Add arguments
-    parser.add_argument("--string_arg", "-s",
+    parser.add_argument("--string_arg", "-s", default=["Howdy"],
                         help="String argument.",
                         type=str, nargs=1)
-    parser.add_argument("--number_arg","-n",
+    parser.add_argument("--number_arg","-n", default=[0],
                         help="Integer argument.",
                         type=int, nargs=1)
-    parser.add_argument("--list_arg","-l",
+    parser.add_argument("--list_arg","-l", default=[1,2,3,4],
                         help="A list of ints",
                         type=int, nargs='+')  # use nargs='+' to require at least one value
-    parser.add_argument("--bool_arg","-b",
+    parser.add_argument("--bool_arg","-b", default=False,
                         help="Boolean argument.",
                         action="store_true")
 

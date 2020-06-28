@@ -7,7 +7,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Put your description here")
     
     # Add arguments
-    parser.add_argument("--string_arg", "-s", default=["Howdy"],
+    parser.add_argument("--string-arg", "-s", default=["Howdy"],
                         help="String argument.",
                         type=str, nargs=1)
     parser.add_argument("--number_arg","-n", default=[0],

@@ -24,6 +24,8 @@ if __name__ == '__main__':
     # string and numbers are given as lists
     # bools are not
     args = parser.parse_args()
+    # or use as:
+    # args = parser.parse_args(['-s', 'test', '-n', '12', '-l', '3', '1', '4', '-b'])
     s = args.string_arg[0]
     l = args.list_arg
     n = args.number_arg[0]

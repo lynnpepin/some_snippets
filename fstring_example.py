@@ -8,7 +8,7 @@ print(f"This is ticket number {1025:>12}")
 """
 >>> print(f"This is ticket number {1025:>12}")
 This is ticket number         1025
-# Note the whitespace 0123456789ab
+# Noticee the whitespace added
 # ":>12" right-justifies the number in a 12-character space
 """
 

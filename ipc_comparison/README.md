@@ -25,12 +25,14 @@ There are two main forms of IPC: **Sockets**, which are easier to architect and 
 | Most popular form of IPC, by far. | Second most popular form of IPC. |
 | | In Python 3.8, see `multiprocess.shared_memory` |
 
-### Both Sockets and Shared Memory:
+The similarities between the two are:
+
  * Popular forms of IPC.
  * Data only exists in RAM.
  * Make it easy for programs in different langauges to "talk".
- * Can be used for parallel processing, etc. 
+ * Can be used for parallel processing.
 
+In short, **you should use sockets unless you have very good reasons not to.** To make it easier to try different methods, **abstract away all read/writes as possible**!
 
 ## Technical details of Sockets
 
@@ -77,22 +79,7 @@ If you have a complicated piece of data you want to send over a socket, you can 
 
 ### Control with Sockets versus Shared Memory
 
-TODO FROM HERE
 
-https://stackoverflow.com/questions/2101671/unix-domain-sockets-vs-shared-memory-mapped-file
+See: https://stackoverflow.com/questions/2101671/unix-domain-sockets-vs-shared-memory-mapped-file
 
-Sockets have a great advantage over shared memory, since data is written and read linearly. Synchronization is implicit with blocking-sockets.
-
-### Sockets technical conclusion
-
-Sockets will provide a lot of utility when it comes to communicating between programs. Sockets are **more portable**, the skills used in sockets are **more applicable** to other applications, and **synchronization** is implicit in the socket mechanism. One socket is used for communication between **two processes**. Reading-writing data requires working with **raw bytes.**
-
-
-
-## Technical Details of Shared Memory
-
-We should not used Shared Memory unless speed is absolutely critical.
-
-## A note on system design
-
-The reason for writing this guide is to provide some 
+Sockets have a great advantage over shared memory, since data is written and read linearly. Synchronization is implicit with blocking-sockets. Sockets will provide a lot of utility when it comes to communicating between programs. Sockets are **more portable**, the skills used in sockets are **more applicable** to other applications, and **synchronization** is implicit in the socket mechanism. One socket is used for communication between **two processes**. Reading-writing data requires working with **raw bytes.**

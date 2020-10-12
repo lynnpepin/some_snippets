@@ -10,31 +10,20 @@ Here, we'll set up a very simple synchronous client-server architecture.
 
 "Inter-process communication" (IPC) is used to share data between two machines. Unlike single-process computing, it is subject to [race conditions](https://en.wikipedia.org/wiki/Race_condition) and other sorts of issues that appear in parallel-computing and multithreading.
 
-There are two main forms of IPC: **Sockets** which are the most widely-used and understood, and **shared memory** which is faster but more difficult. A summary of both:
+There are two main forms of IPC: **Sockets**, which are easier to architect and are more widely used, and **shared memory** which is faster and easier to read/write data with, but more difficult to architect multiprocessing. A summary of both:
 
 
-## Comparison 
+## Comparison
 
-### Sockets:
-
- * Most common form of IPC.
- * Cross platform and portable -- should work on Windows, Mac, and Linux.
- * Very similar to networking code.
-     * Easy to modify code to network between machines.
- * Read and write raw bytes.
-    * Make use of Python's `struct`!
-    * E.g. A float is 4 or 8 bytes -- need to pack and unpack properly!
-
-I highly recommend [Sockets in Python: Guide by Gordon McMillan.](https://docs.python.org/3/howto/sockets.html).
-
-
-### Shared Memory:
-
- * More difficult to use cross-platform.
- * Much faster than sockets.
- * More difficult to code correctly.
- * Simpler to start using: Just read/write files to/from `/dev/shm`
- * (As of Python 3.8) Can use `multiprocessing.shared_memory` for easier usage.
+| Sockets | Shared Memory |
+| - | - |
+| Read and write raw bytes, using `struct` | Read and write data using `open(...)` to `/dev/shm` |
+| Linear read/write and blocking sockets avoids issues | Must be implemented carefully to avoid race conditions and other issues |
+| | Faster, but might be slowed down by necessary synchronization lock objects
+| Widely used, should work identically on every platform | Might require extra code to run on Windows and MacOS |
+| Can be extended to network sockets with little extra work |  |
+| Most popular form of IPC, by far. | Second most popular form of IPC. |
+| | In Python 3.8, see `multiprocess.shared_memory` |
 
 ### Both Sockets and Shared Memory:
  * Popular forms of IPC.
@@ -43,13 +32,18 @@ I highly recommend [Sockets in Python: Guide by Gordon McMillan.](https://docs.p
  * Can be used for parallel processing, etc. 
 
 
-## Technical details
+## Technical details of Sockets
 
 > **Note:** The best way to learn will be by doing! Consider checking out the notebook. This is a quick summary that might answer questions you have.
+>
+> Again, I *highly recommend* the [Sockets in Python: Guide by Gordon McMillan.](https://docs.python.org/3/howto/sockets.html).
 
 A **socket** is an endpoint for two processes to talk to one another. There are two main kinds of sockets: [Unix Domain Sockets](https://en.wikipedia.org/wiki/Unix_domain_socket), which are used in interprocess communication, and [Network Sockets](https://en.wikipedia.org/wiki/Network_socket) (TCP and UDP), on top of which more complicated protocols like HTTP are built. These sockets all operate under the well-known [Berkley Socket](https://en.wikipedia.org/wiki/Berkeley_sockets) (aka POSIX Socket) API.
 
 So, a person who knows how to use Network Sockets will know 99% of what they need to know for Domain Sockets! A very useful skill, as they show up in all sorts of networking.
+
+
+### Packaging data for sockets
 
 There are some difficulties. Mainly, you will send and recieve *raw bytes* over a socket. In Python, we will use `socket` to perform the connection, and `struct` to pack and unpack data from bytes. Here is an example, [courtesy of Mark Tolonen on StackOverflow](https://stackoverflow.com/questions/50494918/send-array-of-floats-over-a-socket-connection):
 
@@ -78,8 +72,26 @@ Some things you have to be aware of:
     * A `long long` can only take on values between about +- 9.23 x 10^18. Python 
     * One solution may be to use the built in `hex` function to represent the integer as hexadecimal values, and send in that manner.
 
+If you have a complicated piece of data you want to send over a socket, you can use `pickle`, which will convert a Python object to bytes to send over a socket. **But Pickle is not safe to use in general!** Anyone who can connect to your port can send malicious data. Safely using pickle is outside the scope of this document.
 
 
+### Control with Sockets versus Shared Memory
+
+TODO FROM HERE
+
+https://stackoverflow.com/questions/2101671/unix-domain-sockets-vs-shared-memory-mapped-file
+
+Sockets have a great advantage over shared memory, since data is written and read linearly. Synchronization is implicit with blocking-sockets.
+
+### Sockets technical conclusion
+
+Sockets will provide a lot of utility when it comes to communicating between programs. Sockets are **more portable**, the skills used in sockets are **more applicable** to other applications, and **synchronization** is implicit in the socket mechanism. One socket is used for communication between **two processes**. Reading-writing data requires working with **raw bytes.**
+
+
+
+## Technical Details of Shared Memory
+
+We should not used Shared Memory unless speed is absolutely critical.
 
 ## A note on system design
 

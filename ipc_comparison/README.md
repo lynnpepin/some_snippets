@@ -1,44 +1,38 @@
 # Inter-process Communication Comparison
 
-These Jupyter notebook looks at how to use *sockets* for inter-process communication, and this README discusses the differences between it and *shared memory*.
+This README.md details the differences between **sockets** and **shared memory** for those wanting to do interprocess communication. This folder also contains a simple server/client program written in a Jupyter notebook, implemented using sockets and explaining each step thoroughly.
 
 List of files:
- * `example_socket_server.ipynb`: Read and run this to understand socket programming, alongside the client notebook!
- * `example_client_server.ipynb`: Read and run this to understand socket programming, alongside the server notebook!
+ * `example_socket_server.ipynb`: Read and run this to understand socket programming! Use alongside the client notebook.
+ * `example_client_server.ipynb`: Read and run this to understand socket programming! Use alongside the server notebook.
  * `server.py` and `client.py` summarize the example notebooks with very minimal comments and prionts. The notebooks have a lot of writing, which makes it look complicated, but in reality it uses very few lines of code!
  * `server_min.py` and `client_min.py` have even less clutter, with no `print` statements or comments.
     * The server uses 17 lines of code, and the client uses only 11!
 
-
-Here, we'll set up a very simple synchronous client-server architecture.
-
 ## The gist of it:
 
-"Inter-process communication" (IPC) is used to share data between two machines. Unlike single-process computing, it is subject to [race conditions](https://en.wikipedia.org/wiki/Race_condition) and other sorts of issues that appear in parallel-computing and multithreading.
+"Inter-process communication" (IPC) is used to share data between two processes on the same machine. Unlike single-process computing, it is subject to concurrent-computing issues like [race conditions](https://en.wikipedia.org/wiki/Race_condition), [deadlock](https://en.wikipedia.org/wiki/Deadlock), the [Reader-Writer problem](https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem), and more.
 
-There are two main forms of IPC: **Sockets**, which are easier to architect and are more widely used, and **shared memory** which is faster and easier to read/write data with, but more difficult to architect multiprocessing. A summary of both:
+There are two main forms of IPC: **Sockets** and **shared memory**. Sockets utilize APIs / syscalls to share data in a structured manner. In Python they are blocking by default, which means certain socket functionality like `recv()` will stall until the socket has something to read. This can help avoid concurrent-computing issues. Shared memory, however, reads and writes data inside RAM using file I/O operations. It is much faster, it is a bit easier to understand how to use, but requires the user know how to implement sempahores, lock-files, etc. to solve certain issues.
 
-
-## Comparison
+Sockets are a standard used in every major operating system and supported by most programming languages! They are also commonly used to send data through the internet. Learning to use sockets will pay off, since you will surely need to use them again in the future!
 
 | Sockets | Shared Memory |
 | - | - |
 | Read and write raw bytes. Use `struct` | Read and write data using `open(...)` to `/dev/shm` |
 | Linear read/write and blocking sockets avoids issues | Must be implemented carefully to avoid race conditions and other issues |
-| | Faster, but might be slowed down by necessary synchronization lock objects
-| Widely used, should work identically on every platform | Might require extra code to run on Windows and MacOS |
-| Can be extended to network sockets with little extra work |  |
+| | Faster than sockets, but might be slowed down by synchronization lock objects
+| Widely used, should work identically on every platform | Might require rewriting code to run on Windows or MacOS |
+| Can be easily rewritten as network sockets with little extra work |  |
 | Most popular form of IPC, by far. | Second most popular form of IPC. |
 | | In Python 3.8, see `multiprocess.shared_memory` |
 
 The similarities between the two are:
 
- * Popular forms of IPC.
+ * Both are popular forms of IPC.
  * Data only exists in RAM.
  * Make it easy for programs in different langauges to "talk".
  * Can be used for parallel processing.
-
-In short, **you should use sockets unless you have very good reasons not to.** To make it easier to try different methods, **abstract away all read/writes as possible**!
 
 ## Technical details of Sockets
 

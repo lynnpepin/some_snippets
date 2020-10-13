@@ -1,7 +1,13 @@
 # Inter-process Communication Comparison
 
-These Jupyter notebook compares the two main methods for inter-process communication: **Sockets** and **shared memory.**
+These Jupyter notebook looks at how to use *sockets* for inter-process communication, and this README discusses the differences between it and *shared memory*.
 
+List of files:
+ * `example_socket_server.ipynb`: Read and run this to understand socket programming, alongside the client notebook!
+ * `example_client_server.ipynb`: Read and run this to understand socket programming, alongside the server notebook!
+ * `server.py` and `client.py` summarize the example notebooks with very minimal comments and prionts. The notebooks have a lot of writing, which makes it look complicated, but in reality it uses very few lines of code!
+ * `server_min.py` and `client_min.py` have even less clutter, with no `print` statements or comments.
+    * The server uses 17 lines of code, and the client uses only 11!
 
 
 Here, we'll set up a very simple synchronous client-server architecture.
@@ -17,7 +23,7 @@ There are two main forms of IPC: **Sockets**, which are easier to architect and 
 
 | Sockets | Shared Memory |
 | - | - |
-| Read and write raw bytes, using `struct` | Read and write data using `open(...)` to `/dev/shm` |
+| Read and write raw bytes. Use `struct` | Read and write data using `open(...)` to `/dev/shm` |
 | Linear read/write and blocking sockets avoids issues | Must be implemented carefully to avoid race conditions and other issues |
 | | Faster, but might be slowed down by necessary synchronization lock objects
 | Widely used, should work identically on every platform | Might require extra code to run on Windows and MacOS |

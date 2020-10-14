@@ -114,7 +114,7 @@ The `SOCK_SEQPACKET` is a "sequenced packet" which operates in "SCTP style". Thi
 The `SOCK_RAW` allows you to write *raw IP packets* with `AF_INET`. May require sudo access.
 
 ### Packaging data for sockets
-> **TLDR:
+> **TLDR: Use Python's `struct` to package data to/from bytes. For Numpy arrays, you can use pack an array as `bytearray = some_array.tostring()` and unpack the array as `new_array = np.fromstring(bytearray)`.
 
 In Python, we are privileged in that we rarely need to consider "data types". Integers can grow to any size without encountering most overflow errors. Floats and ints can interact without pain. We rarely need to do memory management, or think about the individual bytes composing an integer.
 

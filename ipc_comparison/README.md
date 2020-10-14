@@ -33,7 +33,6 @@ The similarities between the two are:
  * Can be used for parallel processing.
 
 ## Technical details of Sockets
-
 > **Note:** The best way to learn will be by doing! Consider checking out the notebook. This is a quick summary that might answer questions you have.
 >
 > I *highly recommend* the [Sockets in Python: Guide by Gordon McMillan.](https://docs.python.org/3/howto/sockets.html).
@@ -51,19 +50,43 @@ Berkely sockets provide some standard functions to interact with sockets. The fu
 | Function    | A.K.A. | Server or client? | Description |
 | - | - | - |
 | `socket()`  | - | Both   | Operating system prepares resources for a socket.
-| | | | `socket()` takes two parameters: Address family (or "domain"), socket type, and protocol.
-| | | | In Python, the protocol will depend on the socket type, and does not need to be set. 
+|                      | | | `socket()` takes two parameters: Address family (or "domain"), socket type, and protocol.
+|                      | | | In Python, the protocol will depend on the socket type, and does not need to be set. 
 | `bind()`    | - | Server | Operating system associates socket with an *address* (see below).
-| `listen()`  | - | Server | (`SOCK_STREAM` / "TCP") Server prepares to hear a connection on to the socket.
+| `listen()`  | - | Server, `SOCK_STREAM` and `SOCK_SEQPACKET` |  Server prepares to hear a connection on to the socket.
 | `connect()` | - | Client | Client connects to existing socket using address.
-| `accept()`  | - | Server | (`SOCK_STREAM` / "TCP") Connection is finished, data can now be sent.
+| `accept()`  | - | Server, `SOCK_STREAM` and `SOCK_SEQPACKET`  | (`SOCK_STREAM` / "TCP") Connection is finished, data can now be sent.
 | `send()`    | `write()`  | Both | Send bytes to the socket buffer
 | `recv()`    | `read()`   | Both | Read (and remove!) bytes from the socket buffer.
 | `close()`   | - | Both   | Terminate the connection and clean up resources.
 
 Other standard functions include `gethostbyname()` and `gethostbyaddr()` (for `AF_INET` addresses), `select()` `poll()`, and `getsockopt()` and `setsockopt()` to read/write socket options,
 
+A stream-type **server** usually works like this:
+
+    sock = socket(ADDRESS_FAMILY, SOCKET_TYPE)
+    sock.bind(ADDRESS)
+    sock.listen()
+    client_sock, client_addr = sock.accept()
+    client_sock.send(), client_sock.recv()
+    sock.close()
+
+
+While a **client** usually works like this:
+
+    sock = socket(ADDRESS_FAMILY, SOCKET_TYPE)
+    sock.connect(ADDRESS)
+    // sock.send(), sock.recv() here as necessary
+    sock.close()
+
+
 ### Socket address families and types
+> **TLDR:** You need to choose an address family (or "domain") for a socket, and you also need to choose a socket type.
+> 
+> For address families, use `AF_INET` for IPv4 sockets or when programming in general. Use `AF_UNIX` if speed and interprocess communications are important to you.
+> 
+> For socket types, use `SOCK_STREAM` for almost every connection you need to use. Use `SOCK_DGRAM` if you're using UDP or believe you have a good reason to.
+
 Sockets need *addresses* so that other processes can connect to them. There can be one socket per address.
 
 | Domain | Example address | Details |
@@ -91,6 +114,8 @@ The `SOCK_SEQPACKET` is a "sequenced packet" which operates in "SCTP style". Thi
 The `SOCK_RAW` allows you to write *raw IP packets* with `AF_INET`. May require sudo access.
 
 ### Packaging data for sockets
+> **TLDR:
+
 In Python, we are privileged in that we rarely need to consider "data types". Integers can grow to any size without encountering most overflow errors. Floats and ints can interact without pain. We rarely need to do memory management, or think about the individual bytes composing an integer.
 
 This is because each integer and float in Python are actually *objects* that have a lot of special functionality associated with them! Python numbers are kinda *special*. But sockets need to communicate *raw bytes*, so we need to cut that cruft away before sending it over the network.

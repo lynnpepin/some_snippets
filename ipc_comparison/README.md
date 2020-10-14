@@ -76,6 +76,7 @@ Sockets need *addresses* so that other processes can connect to them. There can 
 Sockets also have *types* that specify how they work.
 
 | Type             | Details |
+| - | - |
 | `SOCK_STREAM`    | Reliable, sequenced, connection-oriented. One-to-one communication. | 
 | `SOCK_DGRAM`     | Unreliable, connectionless. Many can read, many can write. | 
 | `SOCK_SEQPACKET` | Reliable, sequenced, connection-oriented. One-to-many communication. |

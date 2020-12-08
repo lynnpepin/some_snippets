@@ -48,7 +48,7 @@ A **socket** is an endpoint for two processes to talk to one another. There are 
 Berkely sockets provide some standard functions to interact with sockets. The functions offered and their parameters will depend on the *address family* and *socket type*.
 
 | Function    | A.K.A. | Server or client? | Description |
-| - | - | - |
+| - | - | - | - |
 | `socket()`  | - | Both   | Operating system prepares resources for a socket.
 |                      | | | `socket()` takes two parameters: Address family (or "domain"), socket type, and protocol.
 |                      | | | In Python, the protocol will depend on the socket type, and does not need to be set. 

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>JS Piano 1</title>
+</head>
+<body>
+<p>The goal is for this piano to play sounds on space keypress. Press <em>space</em> to start a tone.</p>
+
+<p>Goals with future pianos:</p>
+<ol><li> Start and stop on key press
+</li><li> Touch-friendly key button
+</li><li> QWERTYU-23567 keys
+</li><li> Remapping for Dvorak?
+</li></ol>
+
+Future pianos should have more tones, (1) require click focus and (2) use touch-friendly buttons, and (3) even provide key-remapping for the Dvoraks out there.</p>
+
+<script>
+// https://stackoverflow.com/questions/34708980/generate-sine-wave-and-play-it-in-the-browser
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext();
+
+function playSound(arr) {
+  // play the tone contained in `arr`
+  // 1. copy contents of `arr` to new buffer
+  var buf = new Float32Array(arr.length)
+  for (var ii = 0; ii < arr.length; ii++) {
+    buf[ii] = arr[ii]
+  }
+  var buffer = context.createBuffer(1, buf.length, context.sampleRate)
+  // 2. 
+  buffer.copyToChannel(buf, 0)
+  var source = context.createBufferSource();
+  
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start(0);
+}
+
+function sineWaveAt(sampleNumber, tone) {
+  // generate the ith "sampleNumber" value in a sine wave given a tone
+  var sampleFreq = context.sampleRate / tone
+  return Math.sin(sampleNumber / (sampleFreq / (Math.PI * 2)))
+}
+
+// example array
+var arr = [],
+  volume = 0.2,
+  seconds = 0.5,
+  tone = 441
+
+for (var i = 0; i < context.sampleRate * seconds; i++) {
+  arr[i] = sineWaveAt(i, tone) * volume
+}
+
+playSound(arr)
+
+
+// https://stackoverflow.com/questions/43958637/how-to-play-a-sound-on-key-press-in-javascript
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode == 32) { //space
+    //document.getElementById('audio').play();
+    playSound(arr)
+  }
+});
+</script>
+</body>
+</html>

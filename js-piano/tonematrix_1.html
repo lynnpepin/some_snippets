@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Tone Matrix 1</title>
+</head>
+<body>
+The goal here is to create a procedural 'tonematrix'.
+Going to start with (1) algorithmically generating a column, (2) then a grid, (3) then playing notes!
+</body>
+
+<div class="matrix">
+</div>
+</html>
+
+
+
+<!-- Begin javascript -->
+<script>
+
+function notePressed(event) {
+  if (this.position == 'up') {
+    this.position = 'down';
+    this.style.backgroundColor = '#ddd';
+  } else {
+    this.position = 'up';
+    this.style.backgroundColor = '#444';
+  }
+}
+
+function noteReleased(event) {
+  // todo
+}
+
+function createKey() {
+  let new_key = document.createElement("div");
+  
+  // Create a key, with class name 'key', and set position to 'up.
+  new_key.className = "key";
+  new_key.setAttribute('position', 'up');
+  new_key.position = 'up';
+  
+  // If clicked, call 'notePressed'
+  new_key.addEventListener("mousedown", notePressed, false);
+  
+  // If hovered over, set to #888.
+  // On leave, reset color to 444 or ddd depending on position.
+  new_key.addEventListener("mouseover", function () {
+    this.style.backgroundColor = "#888";
+  }, false)
+  new_key.addEventListener("mouseout", function () {
+    if (this.position == 'up') {
+      this.style.backgroundColor = '#444';
+    } else {
+      this.style.backgroundColor = '#ddd';
+    }
+  }, false)
+  
+  // leftover code
+  // todo; mouseleave vs mouseout?
+  new_key.addEventListener("mouseleave", noteReleased, false);
+  return new_key;
+}
+
+
+let matrix = document.querySelector(".matrix");
+
+for (i=0; i<12; i++) {
+  matrix.appendChild(createKey())
+}
+
+</script>
+
+<style type="text/css">
+
+.key {
+  cursor: pointer;
+  font: 16px "Open Sans", "Lucida Grande", "Arial", sans-serif;
+  /*border: 1px solid black;*/
+  border-radius: 4px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  box-shadow: 2px 2px darkgray;
+  display: inline-block;
+  position: relative;
+  margin-right: 2px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  background-color: #444;
+}
+
+
+.key div {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.key:hover {
+  background-color: #666;
+}
+
+.key:active {
+  background-color: #222;
+}
+
+</style>

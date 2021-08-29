@@ -1,2 +1,4 @@
 *.pyc
 *pycache*
+struct_format_rambler.ipynb
+*.ipynb_checkpoints*

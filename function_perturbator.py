@@ -1,5 +1,7 @@
 '''function_perturbator.py
 
+WIP
+
 A collection of functions and methods used to:
 
 1. Linearly interpolate and wrap-index lists and list-likes

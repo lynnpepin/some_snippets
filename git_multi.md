@@ -9,4 +9,5 @@ So, let me note my steps :)
 3. `git remote add origin git@gitlab.com:lynnpepin/REPONAMEHERE.git`
 4. `git push --set-upstream origin master`
 5. `git remote set-url origin --push --add git@github.com:lynnpepin/REPONAMEHERE.git`
-6. `git push` as normal. No need to manage this anymore... I think :)
+6. `git push` as normal.
+7. `git remote set-url origin --push --add git@gitlab.com:lynnpepin/REPONAMEHERE.git`: I do this again for good measure...

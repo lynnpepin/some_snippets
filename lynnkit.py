@@ -81,3 +81,21 @@ def fibgen():
         yield vals[ii%2]
         vals[ii%2] += vals[(ii+1)%2]
         ii += 1
+
+def equi_hash(n, a = 0.618033988749895, K = 131072):
+    """Hash integer n to range [0, K) using Equidistribution Theorem Hash, using irrational a.
+
+    Is optimal for a = Phi = 1.618034.
+    Because of mod 1, we use 0.618034.
+
+    :param n: Input to hash
+    :type n: int
+    :param a: Irrational number, defaults to 0.618033988749895
+    :type a: float, optional
+    :param K: [description], defaults to 131072
+    :type K: int, optional
+
+    :return: Result of the hash: An int in range [0, K)
+    :rtype: int
+    """
+    return math.floor(((n * a) % 1)*K)

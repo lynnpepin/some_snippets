@@ -18,8 +18,8 @@ git branch -M main
 git remote remove origin
 
 # then, add your origins
-git remote add gh "git@github.com/$USER_NAME/$REPO_NAME.git"
-git remote add gl "git@gitlab.com/$USER_NAME/$REPO_NAME.git"
+git remote add gh "git@github.com:$USER_NAME/$REPO_NAME.git"
+git remote add gl "git@gitlab.com:$USER_NAME/$REPO_NAME.git"
 
 # finally, push
 git push gh

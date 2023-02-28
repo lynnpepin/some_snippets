@@ -1,6 +1,26 @@
-Git-multi
+Git repos on both GitHub and GitLab.
 
-I keep having issues setting up repos on GitHub and GitLab because I keep forgetting how to do it.
+Instead of `git push`, you write `git push gh; git push gl` to push to each, respectively.
+
+From a new project:
+
+```sh
+USERNAME = lynnpepin
+REPONAME = some_snippets
+
+# first, instantiate your git rep
+git init 
+git add .
+git commit -m "Initial commit"
+git branch -M main
+
+# then, add your origins
+git remote add gh "git@github.com/$USERNAME/$REPONAME.git"
+git remote add gl "git@gitlab.com/$USERNAME/$REPONAME.git"
+
+git push gh
+git push gl
+```
 
 So, let me note my steps :)
 

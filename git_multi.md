@@ -5,8 +5,8 @@ Instead of `git push`, you write `git push gh; git push gl` to push to each, res
 From a new project:
 
 ```sh
-USERNAME = lynnpepin
-REPONAME = some_snippets
+USER_NAME=lynnpepin
+REPO_NAME=some_snippets
 
 # first, instantiate your git rep
 git init 
@@ -15,8 +15,8 @@ git commit -m "Initial commit"
 git branch -M main
 
 # then, add your origins
-git remote add gh "git@github.com/$USERNAME/$REPONAME.git"
-git remote add gl "git@gitlab.com/$USERNAME/$REPONAME.git"
+git remote add gh "git@github.com/$USER_NAME/$REPO_NAME.git"
+git remote add gl "git@gitlab.com/$USER_NAME/$REPO_NAME.git"
 
 git push gh
 git push gl
